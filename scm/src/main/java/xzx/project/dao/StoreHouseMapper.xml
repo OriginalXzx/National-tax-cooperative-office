@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xzx.project.dao.StoreHouseMapper" >
+  <resultMap id="BaseResultMap" type="xzx.project.entity.StoreHouse" >
+    <id column="sh_id" property="shId" jdbcType="VARCHAR" />
+    <result column="sh_name" property="shName" jdbcType="VARCHAR" />
+    <result column="sh_responsible" property="shResponsible" jdbcType="VARCHAR" />
+    <result column="sh_phone" property="shPhone" jdbcType="VARCHAR" />
+    <result column="sh_address" property="shAddress" jdbcType="VARCHAR" />
+    <result column="sh_type" property="shType" jdbcType="VARCHAR" />
+    <result column="sh_remark" property="shRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="selectPageListUseDyc" parameterType="xzx.project.entity.Page"
+  resultMap="BaseResultMap">
+    select * from store_house
+    <where>
+        <if test="paramEntity.shName!=null">and sh_name like #{paramEntity.shName}</if>
+        <if test="paramEntity.shResponsible!=null">and sh_responsible like #{paramEntity.shResponsible}</if>
+        <if test="paramEntity.shPhone!=null">and sh_phone like #{paramEntity.shPhone}</if>
+        <if test="paramEntity.shAddress!=null">and sh_address like #{paramEntity.shAddress}</if>
+        <if test="paramEntity.shType!=null">and sh_type like #{paramEntity.shType}</if>
+        <if test="paramEntity.shRemark!=null">and sh_remark like #{paramEntity.shRemark}</if>
+    </where>
+     limit #{start},#{rows}
+  </select>
+  
+  <select id="selectPageCountUseDyc" parameterType="xzx.project.entity.Page"
+  resultType="Integer">
+    select count(1) from store_house
+     <where>
+        <if test="paramEntity.shName!=null">and sh_name like #{paramEntity.shName}</if>
+        <if test="paramEntity.shResponsible!=null">and sh_responsible like #{paramEntity.shResponsible}</if>
+        <if test="paramEntity.shPhone!=null">and sh_phone like #{paramEntity.shPhone}</if>
+        <if test="paramEntity.shAddress!=null">and sh_address like #{paramEntity.shAddress}</if>
+        <if test="paramEntity.shType!=null">and sh_type like #{paramEntity.shType}</if>
+        <if test="paramEntity.shRemark!=null">and sh_remark like #{paramEntity.shRemark}</if>
+    </where>
+  </select>
+  
+  <!-- 删除操作 ,接受的是id数组-->
+  <delete id="deleteByPks">
+         delete from store_house where sh_id in
+         <foreach collection="array" open="(" separator="," close=")" item="pk">
+          #{pk}
+         </foreach>
+  </delete>
+  
+  <!-- 添加对象 -->
+  <insert id="insert" parameterType="xzx.project.entity.StoreHouse" >
+		insert into store_house
+		(sh_id,sh_name,sh_responsible,sh_phone,sh_address,sh_type,sh_remark)
+		values
+		(#{shId},#{shName},#{shResponsible},#{shPhone},#{shAddress},#{shType},#{shRemark});
+	</insert>
+	
+	<!-- 修改对象 -->
+	<update id="updateByPk" parameterType="xzx.project.entity.StoreHouse">
+	     update store_house set
+			sh_name=#{shName},sh_responsible=#{shResponsible},sh_phone=#{shPhone},
+			sh_address=#{shAddress},sh_remark=#{shRemark},sh_type=#{shType}
+		where
+			sup_id=#{shId}		
+	</update>
+</mapper>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xzx.project.dao.SupplierMapper" >
+  <resultMap id="BaseResultMap" type="xzx.project.entity.Supplier" >
+    <id column="sup_id" property="supId" jdbcType="VARCHAR" />
+    <result column="sup_name" property="supName" jdbcType="VARCHAR" />
+    <result column="sup_linkman" property="supLinkman" jdbcType="VARCHAR" />
+    <result column="sup_phone" property="supPhone" jdbcType="VARCHAR" />
+    <result column="sup_address" property="supAddress" jdbcType="VARCHAR" />
+    <result column="sup_remark" property="supRemark" jdbcType="VARCHAR" />
+    <result column="sup_pay" property="supPay" jdbcType="DECIMAL" />
+    <result column="sup_type" property="supType" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 多条件查询操作 -->
+  <select id="selectPageListUseDyc" parameterType="xzx.project.entity.Page"
+  resultMap="BaseResultMap">
+    select * from supplier
+    <where>
+        <if test="paramEntity.supName!=null">and sup_name like #{paramEntity.supName}</if>
+        <if test="paramEntity.supLinkman!=null">and sup_linkman like #{paramEntity.supLinkman}</if>
+        <if test="paramEntity.supPhone!=null">and sup_phone like #{paramEntity.supPhone}</if>
+        <if test="paramEntity.supAddress!=null">and sup_address like #{paramEntity.supAddress}</if>
+        <if test="paramEntity.supRemark!=null">and sup_remark like #{paramEntity.supRemark}</if>
+        <if test="paramEntity.supPay!=null">and sup_pay like #{paramEntity.supPay}</if>
+        <if test="paramEntity.supType!=null">and sup_name like #{paramEntity.supType}</if>
+    </where>
+     limit #{start},#{rows}
+  </select>
+  
+  <select id="selectPageCountUseDyc" parameterType="xzx.project.entity.Page"
+  resultType="Integer">
+    select count(1) from supplier
+    <where>
+        <if test="paramEntity.supName!=null">and sup_name like #{paramEntity.supName}</if>
+        <if test="paramEntity.supLinkman!=null">and sup_linkman like #{paramEntity.supLinkman}</if>
+        <if test="paramEntity.supPhone!=null">and sup_phone like #{paramEntity.supPhone}</if>
+        <if test="paramEntity.supAddress!=null">and sup_address like #{paramEntity.supAddress}</if>
+        <if test="paramEntity.supRemark!=null">and sup_remark like #{paramEntity.supRemark}</if>
+        <if test="paramEntity.supPay!=null">and sup_pay like #{paramEntity.supPay}</if>
+        <if test="paramEntity.supType!=null">and sup_name like #{paramEntity.supType}</if>
+    </where>
+  </select>
+  
+  <!-- 删除操作 ,接受的是id数组-->
+  <delete id="deleteByPks">
+         delete from supplier where sup_id in
+         <foreach collection="array" open="(" separator="," close=")" item="pk">
+          #{pk}
+         </foreach>
+  </delete>
+  
+  <!-- 添加对象 -->
+  <insert id="insert" parameterType="xzx.project.entity.Supplier" >
+		insert into supplier
+		(sup_id,sup_name,sup_linkman,sup_phone,sup_address,sup_remark,sup_type,sup_pay)
+		values
+		(#{supId},#{supName},#{supLinkman},#{supPhone},#{supAddress},#{supRemark},#{supType},#{supPay});
+	</insert>
+	<!-- 修改数据 -->
+	<update id="updateByPk" parameterType="xzx.project.entity.Supplier">
+	     update supplier set
+			sup_name=#{supName},sup_linkman=#{supLinkman},sup_phone=#{supPhone},
+			sup_address=#{supAddress},sup_remark=#{supRemark},sup_pay=#{supPay},sup_type=#{supType}
+		where
+			sup_id=#{supId}		
+	     
+	</update>
+	
+	<select id="selectSupplier" parameterType="map" resultType="map">
+  	<![CDATA[ 
+  	select sum(ar_payable) total,sup_name from account_records inner join supplier 
+  	on account_records.sup_id=supplier.sup_id 
+  	where ar_date >#{start} and ar_date<=#{end} and ar_bus_type='bo' 
+  	group by sup_name  	
+  	 ]]>
+  </select>
+	
+  
+</mapper>

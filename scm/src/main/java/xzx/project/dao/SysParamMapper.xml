@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xzx.project.dao.SysParamMapper" >
+  <resultMap id="BaseResultMap" type="xzx.project.entity.SysParam" >
+    <id column="sys_param_id" property="sysParamId" jdbcType="BIGINT" />
+    <result column="sys_param_field" property="sysParamField" jdbcType="VARCHAR" />
+    <result column="sys_param_value" property="sysParamValue" jdbcType="VARCHAR" />
+    <result column="sys_param_text" property="sysParamText" jdbcType="VARCHAR" />
+    <result column="sys_param_type" property="sysParamType" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- <select id="selectList" resultMap="BaseResultMap">
+       select * from sys_param
+  </select> -->
+  
+  <select id="selectList" parameterType="String" resultMap="BaseResultMap">
+       select * from sys_param
+  </select>
+  
+  <select id="selectOtherTable" parameterType="String" resultMap="BaseResultMap">
+     ${value}
+  </select>
+</mapper>

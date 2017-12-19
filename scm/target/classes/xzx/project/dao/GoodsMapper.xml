@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xzx.project.dao.GoodsMapper" >
+  <resultMap id="BaseResultMap" type="xzx.project.entity.Goods" >
+    <id column="goods_Id" property="goodsId" jdbcType="VARCHAR" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="goods_unit" property="goodsUnit" jdbcType="VARCHAR" />
+    <result column="goods_type" property="goodsType" jdbcType="VARCHAR" />
+    <result column="goods_color" property="goodsColor" jdbcType="VARCHAR" />
+    <result column="goods_store" property="goodsStore" jdbcType="INTEGER" />
+    <result column="goods_limit" property="goodsLimit" jdbcType="INTEGER" />
+    <result column="goods_commission" property="goodsCommission" jdbcType="DECIMAL" />
+    <result column="goods_producer" property="goodsProducer" jdbcType="VARCHAR" />
+    <result column="goods_remark" property="goodsRemark" jdbcType="VARCHAR" />
+    <result column="goods_sel_price" property="goodsSelPrice" jdbcType="DECIMAL" />
+    <result column="goods_buy_price" property="goodsBuyPrice" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <select id="selectPageListUseDyc" parameterType="xzx.project.entity.Page"
+  resultMap="BaseResultMap">
+    select * from goods
+    <where>
+        <if test="paramEntity.goodsId!=null">and goods_id like #{paramEntity.goodsId}</if>
+        <if test="paramEntity.goodsName!=null">and goods_name like #{paramEntity.goodsName}</if>
+        <if test="paramEntity.goodsUnit!=null">and goods_linkman like #{paramEntity.goodsUnit}</if>
+        <if test="paramEntity.goodsType!=null">and goods_type like #{paramEntity.goodsType}</if>
+        <if test="paramEntity.goodsColor!=null">and goods_color like #{paramEntity.goodsColor}</if>
+        <if test="paramEntity.goodsStore!=null">and goods_store like #{paramEntity.goodsStore}</if>
+        <if test="paramEntity.goodsLimit!=null">and goods_limit like #{paramEntity.goodsLimit}</if>
+        <if test="paramEntity.goodsCommission!=null">and goods_commission like #{paramEntity.goodsCommission}</if>
+        <if test="paramEntity.goodsProducer!=null">and goods_producer like #{paramEntity.goodsProducer}</if>
+        <if test="paramEntity.goodsRemark!=null">and goods_remark like #{paramEntity.goodsRemark}</if>
+        <if test="paramEntity.goodsSelPrice!=null">and goods_sel_price like #{paramEntity.goodsSelPrice}</if>
+        <if test="paramEntity.goodsBuyPrice!=null">and goods_buy_price like #{paramEntity.goodsBuyPrice}</if>
+    </where>
+     limit #{start},#{rows}
+  </select>
+  
+  <select id="selectPageCountUseDyc" parameterType="xzx.project.entity.Page"
+  resultType="Integer">
+    select count(1) from goods
+    <where>
+        <if test="paramEntity.goodsId!=null">and goods_id like #{paramEntity.goodsId}</if>
+        <if test="paramEntity.goodsName!=null">and goods_name like #{paramEntity.goodsName}</if>
+        <if test="paramEntity.goodsUnit!=null">and goods_unit like #{paramEntity.goodsUnit}</if>
+        <if test="paramEntity.goodsType!=null">and goods_type like #{paramEntity.goodsType}</if>
+        <if test="paramEntity.goodsColor!=null">and goods_color like #{paramEntity.goodsColor}</if>
+        <if test="paramEntity.goodsStore!=null">and goods_store like #{paramEntity.goodsStore}</if>
+        <if test="paramEntity.goodsLimit!=null">and goods_limit like #{paramEntity.goodsLimit}</if>
+        <if test="paramEntity.goodsCommission!=null">and goods_commission like #{paramEntity.goodsCommission}</if>
+        <if test="paramEntity.goodsProducer!=null">and goods_producer like #{paramEntity.goodsProducer}</if>
+        <if test="paramEntity.goodsRemark!=null">and goods_remark like #{paramEntity.goodsRemark}</if>
+        <if test="paramEntity.goodsSelPrice!=null">and goods_sel_price like #{paramEntity.goodsSelPrice}</if>
+        <if test="paramEntity.goodsBuyPrice!=null">and goods_buy_price like #{paramEntity.goodsBuyPrice}</if>
+    </where>
+  </select>
+  
+  <!-- 删除操作 ,接受的是id数组-->
+  <delete id="deleteByPks">
+         delete from goods where goods_id in
+         <foreach collection="array" open="(" separator="," close=")" item="pk">
+          #{pk}
+         </foreach>
+  </delete>
+  <!-- 新增操作 -->
+  <insert id="insert" parameterType="xzx.project.entity.Goods">
+         insert into goods
+         (goods_id,goods_name,goods_unit,goods_type,goods_color,goods_store,goods_limit,goods_commission,goods_producer,goods_remark,goods_sel_price,goods_buy_price)
+         values
+         (#{goodsId},#{goodsName},#{goodsUnit},#{goodsType},#{goodsColor},#{goodsStore},#{goodsLimit},#{goodsCommission},#{goodsProducer},#{goodsRemark},#{goodsSelPrice},#{goodsBuyPrice});
+  </insert>
+  
+  <!-- 修改对象 -->
+  <update id="updateByPk" parameterType="xzx.project.entity.Goods">
+        update goods set
+			goods_name=#{goodsName},goods_unit=#{goodsUnit},goods_type=#{goodsType},
+			goods_color=#{goodsColor},goods_store=#{goodsStore},goods_limit,=#{goodsLimit},goods_commission=#{goodsCommission},goods_producer=#{goodsProducer},goods_remark=#{goodsRemark},goods_sel_price=#{goodsSelPrice},goods_buy_price=#{goodsBuyPrice}
+		where
+			goods_id=#{goodsId}	
+  </update>
+  
+  
+</mapper>
